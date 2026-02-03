@@ -751,3 +751,52 @@ def test_copy_calibration_frames_copy_failure():
             ):
                 # Should not raise, but log error
                 copy_calibration_frames(source_dir=tmpdir, dest_dir=tmpdir)
+
+
+def test_copy_calibration_frames_quiet():
+    """Test copy_calibration_frames with quiet mode."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        bias_metadata = {
+            "/src/bias.xisf": {
+                "type": "MASTER BIAS",
+                "camera": "DWARFIII",
+                "gain": 100,
+            }
+        }
+
+        def mock_get_metadata(*args, **kwargs):
+            filter_type = kwargs.get("filters", {}).get("type", "")
+            if filter_type == "MASTER BIAS":
+                return bias_metadata
+            return {}
+
+        with patch(
+            "ap_move_master_to_library.move_calibration.get_filtered_metadata",
+            side_effect=mock_get_metadata,
+        ):
+            with patch("ap_move_master_to_library.move_calibration.copy_file"):
+                with patch(
+                    "ap_move_master_to_library.move_calibration.progress_iter"
+                ) as mock_progress_iter:
+                    # Make progress_iter return the input iterable
+                    mock_progress_iter.side_effect = lambda x, **kwargs: x
+
+                    # Test with quiet=True
+                    copy_calibration_frames(
+                        source_dir=tmpdir, dest_dir=tmpdir, quiet=True
+                    )
+
+                    # Verify progress_iter was called with enabled=False
+                    for call in mock_progress_iter.call_args_list:
+                        assert call.kwargs.get("enabled") is False
+
+                    mock_progress_iter.reset_mock()
+
+                    # Test with quiet=False (default)
+                    copy_calibration_frames(
+                        source_dir=tmpdir, dest_dir=tmpdir, quiet=False
+                    )
+
+                    # Verify progress_iter was called with enabled=True
+                    for call in mock_progress_iter.call_args_list:
+                        assert call.kwargs.get("enabled") is True

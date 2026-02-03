@@ -215,6 +215,7 @@ def copy_calibration_frames(
     debug: bool = False,
     dryrun: bool = False,
     no_overwrite: bool = False,
+    quiet: bool = False,
 ):
     """
     Copies and organizes master calibration frames from source to destination.
@@ -225,6 +226,7 @@ def copy_calibration_frames(
         debug: Enable debug output
         dryrun: Perform dry run without copying files
         no_overwrite: If True, fail if any destination files already exist
+        quiet: Suppress progress output
 
     Raises:
         FileExistsError: If no_overwrite is True and destination files exist
@@ -295,7 +297,9 @@ def copy_calibration_frames(
                 )
 
         # Copy files
-        for source_file, dest_file in copy_list:
+        for source_file, dest_file in progress_iter(
+            copy_list, desc=f"Copying {frame_type}", enabled=not quiet
+        ):
             logger.debug(f"Copy {source_file} -> {dest_file}")
 
             try:
@@ -343,6 +347,12 @@ def main():
         action="store_true",
         help="Fail if destination files already exist (default: overwrite existing files)",
     )
+    parser.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="Suppress progress output",
+    )
 
     args = parser.parse_args()
 
@@ -356,6 +366,7 @@ def main():
             debug=args.debug,
             dryrun=args.dryrun,
             no_overwrite=args.no_overwrite,
+            quiet=args.quiet,
         )
     except Exception as e:
         logger.error(f"{e}")

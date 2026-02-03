@@ -41,7 +41,7 @@ pip install git+https://github.com/jewzaam/ap-move-master-to-library.git
 ## Usage
 
 ```powershell
-python -m ap_move_master_to_library <source_dir> <dest_dir> [--debug] [--dryrun] [--no-overwrite]
+python -m ap_move_master_to_library <source_dir> <dest_dir> [--debug] [--dryrun] [--no-overwrite] [--quiet]
 ```
 
 Options:
@@ -50,6 +50,7 @@ Options:
 - `--debug`: Enable debug output
 - `--dryrun`: Perform dry run without copying files
 - `--no-overwrite`: Fail if destination files already exist (default: overwrite)
+- `-q`, `--quiet`: Suppress progress output
 
 **Windows Note**: Avoid trailing backslashes in quoted paths (use `"D:\path"` not `"D:\path\"`) as the backslash escapes the closing quote.
 
