@@ -357,7 +357,7 @@ def main():
     args = parser.parse_args()
 
     # Setup logging
-    logger = setup_logging(name="ap_move_master_to_library", debug=args.debug)
+    logger = setup_logging(name="ap_move_master_to_library", debug=args.debug, quiet=args.quiet)
 
     try:
         copy_calibration_frames(
