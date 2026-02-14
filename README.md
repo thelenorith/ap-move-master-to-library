@@ -100,7 +100,7 @@ Filenames include full metadata for matching:
 
 ## Requirements
 
-- Python 3.9+
+- Python 3.10+
 - `ap-common` package (installed automatically)
 
 Frames must have proper FITS keywords:
