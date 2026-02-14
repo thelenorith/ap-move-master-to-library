@@ -20,6 +20,10 @@ from ap_common.utils import camelCase, replace_env_vars
 
 from . import config
 
+# Exit code constants
+EXIT_SUCCESS = 0
+EXIT_ERROR = 1
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -377,7 +381,7 @@ def main():
         logger.error(f"{e}")
         if args.debug:
             logger.exception("Full traceback:")
-        sys.exit(1)
+        sys.exit(EXIT_ERROR)
 
 
 if __name__ == "__main__":
