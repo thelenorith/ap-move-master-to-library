@@ -1,12 +1,7 @@
 # ap-move-master-to-library
 
-[![Test](https://github.com/jewzaam/ap-move-master-to-library/workflows/Test/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/test.yml)
-[![Coverage](https://github.com/jewzaam/ap-move-master-to-library/workflows/Coverage%20Check/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/coverage.yml)
-[![Lint](https://github.com/jewzaam/ap-move-master-to-library/workflows/Lint/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/lint.yml)
-[![Format](https://github.com/jewzaam/ap-move-master-to-library/workflows/Format%20Check/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/format.yml)
-[![Type Check](https://github.com/jewzaam/ap-move-master-to-library/workflows/Type%20Check/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/typecheck.yml)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Test](https://github.com/jewzaam/ap-move-master-to-library/workflows/Test/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/test.yml) [![Coverage](https://github.com/jewzaam/ap-move-master-to-library/workflows/Coverage%20Check/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/coverage.yml) [![Lint](https://github.com/jewzaam/ap-move-master-to-library/workflows/Lint/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/lint.yml) [![Format](https://github.com/jewzaam/ap-move-master-to-library/workflows/Format%20Check/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/format.yml) [![Type Check](https://github.com/jewzaam/ap-move-master-to-library/workflows/Type%20Check/badge.svg)](https://github.com/jewzaam/ap-move-master-to-library/actions/workflows/typecheck.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Organizes master calibration frames (bias, dark, flat) into a structured library by camera, optic, and date.
 
@@ -78,7 +73,7 @@ python -m ap_move_master_to_library "D:\WBPP\_calibration\master" "D:\Calibratio
 dest_dir/
 ├── MASTER BIAS/
 │   └── {camera}/
-│       └── masterBias_GAIN_{gain}_OFFSET_{offset}_SETTEMP_{temp}_READOUTMODE_{mode}.xisf
+│       └── masterBias_GAIN_{gain}_OFFSET_{offset}_SETTEMP_{temp}_READOUTM_{mode}.xisf
 ├── MASTER DARK/
 │   └── {camera}/
 │       └── masterDark_EXPTIME_{seconds}_GAIN_{gain}_OFFSET_{offset}_SETTEMP_{temp}.xisf
@@ -94,7 +89,7 @@ Masters are organized by:
 - **MASTER FLAT**: Camera, optional optic, and date (date-specific, organized chronologically)
 
 Filenames include full metadata for matching:
-- `GAIN`, `OFFSET`, `SETTEMP`, `READOUTMODE` - Instrument settings
+- `GAIN`, `OFFSET`, `SETTEMP`, `READOUTM` - Instrument settings
 - `EXPTIME` (darks only) - Exposure time
 - `FILTER` (flats only) - Filter name
 - `FOCALLEN` (flats, optional) - Focal length
@@ -110,7 +105,7 @@ Frames must have proper FITS keywords:
 - `GAIN`: Gain setting
 - `OFFSET`: Offset setting (optional)
 - `SET-TEMP` or `SETTEMP`: Sensor temperature (optional)
-- `READOUTM`: Readout mode (optional)
+- `READOUTMODE` or `READOUTM`: Readout mode (optional)
 - `EXPOSURE` or `EXPTIME`: Exposure time (for darks)
 - `DATE-OBS`: Observation date (for flats)
 - `FILTER`: Filter name (for flats)
@@ -125,25 +120,3 @@ Frames must have proper FITS keywords:
 5. Reports statistics (scanned, copied, skipped)
 
 Files are copied (not moved) to preserve the original source directory.
-
-## Development
-
-Run tests:
-```powershell
-make test
-```
-
-Run with coverage:
-```powershell
-make coverage
-```
-
-Format code:
-```powershell
-make format
-```
-
-Lint code:
-```powershell
-make lint
-```
