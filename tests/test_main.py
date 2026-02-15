@@ -43,6 +43,7 @@ class TestMainCLI:
         assert call_args.kwargs["debug"] is False
         assert call_args.kwargs["dryrun"] is False
         assert call_args.kwargs["no_overwrite"] is False
+        assert call_args.kwargs["quiet"] is False
 
     def test_debug_flag(self, tmp_path, mocker):
         """Test --debug flag is correctly passed."""
@@ -125,9 +126,9 @@ class TestMainCLI:
 
         main()
 
-        # quiet is used for logging setup but not passed to copy function
-        # This test verifies argparse accepts the flag
-        mock_copy.assert_called_once()
+        # Verify quiet=True is passed through to copy_calibration_frames
+        call_args = mock_copy.call_args
+        assert call_args.kwargs["quiet"] is True
 
     def test_quiet_short_flag(self, tmp_path, mocker):
         """Test -q (short form) flag works."""
@@ -147,8 +148,9 @@ class TestMainCLI:
 
         main()
 
-        # Verify -q is recognized as --quiet
-        mock_copy.assert_called_once()
+        # Verify -q maps to quiet=True in kwargs
+        call_args = mock_copy.call_args
+        assert call_args.kwargs["quiet"] is True
 
     def test_multiple_flags_combined(self, tmp_path, mocker):
         """Test --dryrun --debug --no-overwrite work together."""
@@ -179,6 +181,7 @@ class TestMainCLI:
         assert call_args.kwargs["dryrun"] is True
         assert call_args.kwargs["debug"] is True
         assert call_args.kwargs["no_overwrite"] is True
+        assert call_args.kwargs["quiet"] is False
 
     def test_all_flags_combined(self, tmp_path, mocker):
         """Test all flags work together."""
@@ -209,4 +212,5 @@ class TestMainCLI:
         call_args = mock_copy.call_args
         assert call_args.kwargs["dryrun"] is True
         assert call_args.kwargs["debug"] is True
+        assert call_args.kwargs["quiet"] is True
         assert call_args.kwargs["no_overwrite"] is True
